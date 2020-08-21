@@ -1,0 +1,50 @@
+body {
+    background-color: ghostwhite;
+    display: block;
+    margin: 8px;
+}
+.header {
+    min-height: 50px;
+    vertical-align: middle;
+}
+.divcenter {
+    margin-left: auto;
+    margin-right: auto;
+}
+.main {
+    width: 300px;
+}
+.cat {
+    width: 500px;
+}
+.prod {
+    width: 800px;
+}
+.btnclass {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+}
+.btnclass a {
+    text-decoration: none;
+}
+.white-bg {
+    padding: 20px;
+    border-radius: 5px;
+    background-color: white;
+}
+form input {
+    width: 100%;
+}
+.tabs {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 5px;
+}
+.tabs .btn {
+    width: 49%;
+}
+#nameerror {
+    padding: 0 15px 0 15px;
+}
