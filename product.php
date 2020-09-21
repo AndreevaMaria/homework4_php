@@ -80,13 +80,18 @@ $link = connect();
                     $desc = trim(htmlspecialchars($_POST['desc']));
                 } else $desc = "";
 
-                $sector_id = mysqli_query($link, "SELECT sectorid FROM categories WHERE id=$categoryid");
-                //$row_sect = mysqli_fetch_array($res_sect, MYSQLI_NUM);
-                $sectorid = $sector_id;
-                mysqli_free_result($sector_id);
+                $row_sect = mysqli_query($link, "SELECT sectorid FROM categories WHERE id=$categoryid");
+                $row_sect = mysqli_fetch_array($res_sect, MYSQLI_NUM);
+                $sectorid = $row_sect[0];
+                mysqli_free_result($row_sect);
 
-                $count = mysqli_query($link, "SELECT COUNT(id) FROM `products` WHERE `product`=.'$name'.");
-                if ($count === 0) {
+                
+               // $count = (int)mysqli_query($link, "SELECT COUNT(id) FROM `products` WHERE `product`=.'$name'.");
+               // if ($count === 0) {
+                
+                $result = mysqli_query($link, "SELECT * FROM `products` WHERE `product`=.'$name'.");
+                $row_cnt = mysqli_num_rows($result);
+                if ($row_cnt === 0) {
                     $ins = "INSERT INTO `products`(`product`, `price`, `categoryid`, `sectorid`, `make`, `model`, `country`, `info`) VALUES('$name', '$price', '$categoryid', '$sectorid', '$make', '$model', '$country', '$desc')";
                     mysqli_query($link, $ins);
                     
@@ -96,11 +101,12 @@ $link = connect();
                         exit;
                     }
                     else {
+                        echo '<script>window.location = document.URL</script>';
                         echo "<h5 class='text-success'>Данные по $name добавлены!</h5>";
                         exit;
                     }
                 } else {
-                    $product_id = mysqli_query($link, "SELECT id FROM `products` WHERE `product`=.'$name'.");
+                    $product_id = (int)mysqli_query($link, "SELECT id FROM `products` WHERE `product`=.'$name'.");
                     $upd = "UPDATE `products` SET product=$name, price=$price, categoryid=$categoryid, sectorid=$sectorid, make=$make, model=$model, country=$country, info=$desc WHERE id=.'$product_id'.";
                     mysqli_query($link, $upd);
                     
@@ -108,13 +114,13 @@ $link = connect();
                         echo "Error text:". mysqli_error($link);
                         exit;
                     } else {
+                        echo '<script>window.location = document.URL</script>';
                         echo "<h5 class='text-success'>Данные по $name обновлены!</h5>";
                         exit;
                     }
                 }
-                mysqli_free_result($count); 
-                
-                echo '<script>window.location = document.URL</script>';
+                mysqli_free_result($result);
+                //mysqli_free_result($count);                
             }
             ?>
             </div>
