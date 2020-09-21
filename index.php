@@ -1,6 +1,16 @@
 <?php 
 error_reporting(E_ALL) ;
 session_start();
+if (!isset($_SESSION['user'])) {
+    echo "<h6 class='text-alert'>Необходима авторизация!</h6>";
+}
+else {
+    $now = time();
+    if ($now > $_SESSION['expire']) {
+        session_destroy();
+        echo "<h6 class='text-alert'>Необходима авторизация!</h6>";
+    }
+    else {
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -29,25 +39,27 @@ session_start();
         </div>
     </div>
     <div class="divcenter main">
-            <div class="row">
-                <input type="button" class="btnclass btn-primary" name="addSector" value="Add Sector">
-            </div>
-            <div class="row">
-                <input type="button" class="btnclass btn-secondary" name="addCategory" value="Add Category" onclick="location.href='category.php'">
-            </div>
-            <div class="row">            
-                <input type="button" class="btnclass btn-secondary" name="addProduct" value="Add Product" onclick="location.href='product.php'">
-            </div>
-            <div class="row">
-                <form method="POST">
-                    <div style="width: 100%">
-                        <input type="button" class="btnclass btn-primary" name="logout" value="Log Out">
-                    </div>
-                </form>
-            </div>
-        
+        <div class="row">
+            <input type="button" class="btnclass btn-primary" name="addSector" value="Add Sector">
+        </div>
+        <div class="row">
+            <input type="button" class="btnclass btn-secondary" name="addCategory" value="Add Category" onclick="location.href='category.php'">
+        </div>
+        <div class="row">            
+            <input type="button" class="btnclass btn-secondary" name="addProduct" value="Add Product" onclick="location.href='product.php'">
+        </div>
+        <div class="row">
+            <form method="POST">
+                <div style="width: 100%">
+                    <input type="button" class="btnclass btn-primary" name="logout" value="Log Out">
+                </div>
+            </form>
+        </div>
     </div>
     <?php
+        }
+    }
+
     if(isset($_POST['logout'])) {
         if(isset($_SESSION['ruser'])) {
             //session_destroy();
@@ -55,11 +67,6 @@ session_start();
             echo $_SESSION['ruser'];
             echo '<script>window.location.reload()</script>';
         }
-    }
-    if(time() - $_SESSION['login_time'] >= 60){
-        //session_destroy();
-        unset($_SESSION['ruser']);
-        echo '<script>window.location.reload()</script>';
     }
     ?>
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
