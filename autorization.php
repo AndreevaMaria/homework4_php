@@ -46,7 +46,6 @@ if(isset($_POST['check-log'])) {
         echo '<span><form method="post">';
         echo '<h6>Hello, '.$_SESSION['ruser'].'!</h6>';
         echo '<input type="submit" name="exit" value="Log out" class="btn btn-outline-secondary btn-sm">';
-        $_SESSION['expire'] = $_SESSION['start'] + (60 * 60);
         echo '</form></span>';
 
         if(isset($_POST['exit'])) {

@@ -31,16 +31,7 @@ session_start();
             </div>
         </div>
     </div>
-    <?php
-    }
-    else {
-        $now = time();
-        if ($now > $_SESSION['expire']) {
-            session_destroy();
-            echo '<script>window.location.reload()</script>';
-        }
-        else {
-    ?>
+    
     <div class="divcenter main">
         <div class="row">
             <input type="button" class="btnclass btn-primary" name="addSector" value="Add Sector">
@@ -60,8 +51,14 @@ session_start();
         </div>
     </div>
     <?php
-        }
+}
+else {
+    $now = time();
+    if ($now > $_SESSION['expire']) {
+        session_destroy();
+        echo '<script>window.location.reload()</script>';
     }
+}
 
     if(isset($_POST['logout'])) {
         if(isset($_SESSION['ruser'])) {

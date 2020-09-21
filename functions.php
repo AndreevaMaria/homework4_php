@@ -74,7 +74,8 @@ function login($login, $pass) {
     while($row = mysqli_fetch_array($res, MYSQLI_NUM)) {
         if($name == $row[0] && password_verify($pass, $row[1])) {
             $_SESSION['ruser'] = $name;
-            $_SESSION['login_time'] = time();
+           // $_SESSION['login_time'] = time();
+            $_SESSION['expire'] = $_SESSION['start'] + (60 * 60);
             $userid = $row[2];
             return true;
         } else {
