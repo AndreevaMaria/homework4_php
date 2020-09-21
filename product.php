@@ -80,14 +80,13 @@ $link = connect();
                     $desc = trim(htmlspecialchars($_POST['desc']));
                 } else $desc = "";
 
-                $res_sect = mysqli_query($link, "SELECT sectorid FROM categories WHERE id=$categoryid");
-                $row_sect = mysqli_fetch_array($res_sect, MYSQLI_NUM);
-                $sectorid = $row_sect[0];
-                mysqli_free_result($res_sect);
+                $sector_id = mysqli_query($link, "SELECT sectorid FROM categories WHERE id=$categoryid");
+                //$row_sect = mysqli_fetch_array($res_sect, MYSQLI_NUM);
+                $sectorid = $sector_id;
+                mysqli_free_result($sector_id);
 
-
-                $result = mysqli_query($link, "SELECT `product` FROM `products` WHERE `product`=$name");
-                if(mysql_num_rows($result) <= 0) {
+                $count = mysqli_query($link, "SELECT COUNT(id) FROM `products` WHERE `product`=.'$name'.");
+                if ($count === 0) {
                     $ins = "INSERT INTO `products`(`product`, `price`, `categoryid`, `sectorid`, `make`, `model`, `country`, `info`) VALUES('$name', '$price', '$categoryid', '$sectorid', '$make', '$model', '$country', '$desc')";
                     mysqli_query($link, $ins);
                     
@@ -96,9 +95,15 @@ $link = connect();
                         echo "<h5 class='text-danger'>Error code ".$err."</h5>";
                         exit;
                     }
+                    else {
+                        echo "<h5 class='text-success'>Данные по $name добавлены!</h5>";
+                        exit;
+                    }
                 } else {
-                    $upd = "UPDATE `products` SET price=$price, categoryid=$categoryid, sectorid=$sectorid, make=$make, model=$model, country=$country, info=$desc WHERE product=$name";
+                    $product_id = mysqli_query($link, "SELECT id FROM `products` WHERE `product`=.'$name'.");
+                    $upd = "UPDATE `products` SET product=$name, price=$price, categoryid=$categoryid, sectorid=$sectorid, make=$make, model=$model, country=$country, info=$desc WHERE id=.'$product_id'.";
                     mysqli_query($link, $upd);
+                    
                     if(mysqli_error($link)) {
                         echo "Error text:". mysqli_error($link);
                         exit;
@@ -107,6 +112,8 @@ $link = connect();
                         exit;
                     }
                 }
+                mysqli_free_result($count); 
+                
                 echo '<script>window.location = document.URL</script>';
             }
             ?>
