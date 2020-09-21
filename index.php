@@ -1,16 +1,6 @@
 <?php 
 error_reporting(E_ALL) ;
 session_start();
-if (!isset($_SESSION['user'])) {
-    echo "<h6 class='text-alert'>Необходима авторизация!</h6>";
-}
-else {
-    $now = time();
-    if ($now > $_SESSION['expire']) {
-        session_destroy();
-        echo "<h6 class='text-alert'>Необходима авторизация!</h6>";
-    }
-    else {
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -31,6 +21,9 @@ else {
             </div>
         </div>
     </header>
+    <?php 
+    if (!isset($_SESSION['user'])) {
+        ?>
     <div class="row">
         <div class="col-12">
             <div class="alert alert-warning" role="alert">
@@ -38,6 +31,16 @@ else {
             </div>
         </div>
     </div>
+    <?php
+    }
+    else {
+        $now = time();
+        if ($now > $_SESSION['expire']) {
+            session_destroy();
+            echo '<script>window.location.reload()</script>';
+        }
+        else {
+    ?>
     <div class="divcenter main">
         <div class="row">
             <input type="button" class="btnclass btn-primary" name="addSector" value="Add Sector">
